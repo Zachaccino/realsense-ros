@@ -227,7 +227,7 @@ void BaseRealSenseNode::setupErrorCallback()
             {
                 ROS_WARN_STREAM("Hardware Notification:" << n.get_description() << "," << n.get_timestamp() << "," << n.get_severity() << "," << n.get_category());
             }
-            if (error_strings.end() != find_if(error_strings.begin(), error_strings.end(), [&n] (std::string err) 
+            if (error_strings.end() != std::find_if(error_strings.begin(), error_strings.end(), [&n] (std::string err) 
                                         {return (n.get_description().find(err) != std::string::npos); }))
             {
                 ROS_ERROR_STREAM("Performing Hardware Reset.");
@@ -532,7 +532,7 @@ void BaseRealSenseNode::registerDynamicOption(ros::NodeHandle& nh, rs2::options 
                 auto option_value = int(sensor_option_value);
                 if (nh1.param(option_name, option_value, option_value))
                 {
-                    if (std::find_if(enum_dict.cbegin(), enum_dict.cend(),
+                    if (std::std::find_if(enum_dict.cbegin(), enum_dict.cend(),
                                     [&option_value](const std::pair<std::string, int>& kv) {
                                         return kv.second == option_value;
                                     }) == enum_dict.cend())
@@ -547,7 +547,7 @@ void BaseRealSenseNode::registerDynamicOption(ros::NodeHandle& nh, rs2::options 
                         sensor.set_option(option, option_value);
                     }
                 }
-                if (std::find_if(enum_dict.cbegin(), enum_dict.cend(),
+                if (std::std::find_if(enum_dict.cbegin(), enum_dict.cend(),
                                     [&option_value](const std::pair<std::string, int>& kv) {
                                         return kv.second == option_value;
                                     }) == enum_dict.cend())
@@ -618,7 +618,7 @@ void BaseRealSenseNode::registerDynamicReconfigCb(ros::NodeHandle& nh)
 
 void BaseRealSenseNode::registerHDRoptions()
 {
-    if (std::find_if(std::begin(_filters), std::end(_filters), [](NamedFilter f){return f._name == "hdr_merge";}) == std::end(_filters))
+    if (std::std::find_if(std::begin(_filters), std::end(_filters), [](NamedFilter f){return f._name == "hdr_merge";}) == std::end(_filters))
         return;
 
     std::string module_name;
@@ -2213,7 +2213,7 @@ void BaseRealSenseNode::publishPointCloud(rs2::points pc, const ros::Time& t, co
     {
         std::set<rs2_format> available_formats{ rs2_format::RS2_FORMAT_RGB8, rs2_format::RS2_FORMAT_Y8 };
         
-        texture_frame_itr = find_if(frameset.begin(), frameset.end(), [&texture_source_id, &available_formats] (rs2::frame f) 
+        texture_frame_itr = std::find_if(frameset.begin(), frameset.end(), [&texture_source_id, &available_formats] (rs2::frame f) 
                                 {return (rs2_stream(f.get_profile().stream_type()) == texture_source_id) &&
                                             (available_formats.find(f.get_profile().format()) != available_formats.end()); });
         if (texture_frame_itr == frameset.end())
@@ -2359,7 +2359,7 @@ Extrinsics BaseRealSenseNode::rsExtrinsicsToMsg(const rs2_extrinsics& extrinsics
 rs2::stream_profile BaseRealSenseNode::getAProfile(const stream_index_pair& stream)
 {
     const std::vector<rs2::stream_profile> profiles = _sensors[stream].get_stream_profiles();
-    return *(std::find_if(profiles.begin(), profiles.end(),
+    return *(std::std::find_if(profiles.begin(), profiles.end(),
                                             [&stream] (const rs2::stream_profile& profile) { 
                                                 return ((profile.stream_type() == stream.first) && (profile.stream_index() == stream.second)); 
                                             }));
@@ -2469,7 +2469,7 @@ bool BaseRealSenseNode::getEnabledProfile(const stream_index_pair& stream_index,
     {
         // Assuming that all D400 SKUs have depth sensor
         auto profiles = _enabled_profiles[stream_index];
-        auto it = std::find_if(profiles.begin(), profiles.end(),
+        auto it = std::std::find_if(profiles.begin(), profiles.end(),
                                [&](const rs2::stream_profile& profile)
                                { return (profile.stream_type() == stream_index.first); });
         if (it == profiles.end())
