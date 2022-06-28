@@ -532,7 +532,7 @@ void BaseRealSenseNode::registerDynamicOption(ros::NodeHandle& nh, rs2::options 
                 auto option_value = int(sensor_option_value);
                 if (nh1.param(option_name, option_value, option_value))
                 {
-                    if (std::std::find_if(enum_dict.cbegin(), enum_dict.cend(),
+                    if (std::find_if(enum_dict.cbegin(), enum_dict.cend(),
                                     [&option_value](const std::pair<std::string, int>& kv) {
                                         return kv.second == option_value;
                                     }) == enum_dict.cend())
@@ -547,7 +547,7 @@ void BaseRealSenseNode::registerDynamicOption(ros::NodeHandle& nh, rs2::options 
                         sensor.set_option(option, option_value);
                     }
                 }
-                if (std::std::find_if(enum_dict.cbegin(), enum_dict.cend(),
+                if (std::find_if(enum_dict.cbegin(), enum_dict.cend(),
                                     [&option_value](const std::pair<std::string, int>& kv) {
                                         return kv.second == option_value;
                                     }) == enum_dict.cend())
@@ -618,7 +618,7 @@ void BaseRealSenseNode::registerDynamicReconfigCb(ros::NodeHandle& nh)
 
 void BaseRealSenseNode::registerHDRoptions()
 {
-    if (std::std::find_if(std::begin(_filters), std::end(_filters), [](NamedFilter f){return f._name == "hdr_merge";}) == std::end(_filters))
+    if (std::find_if(std::begin(_filters), std::end(_filters), [](NamedFilter f){return f._name == "hdr_merge";}) == std::end(_filters))
         return;
 
     std::string module_name;
@@ -2359,7 +2359,7 @@ Extrinsics BaseRealSenseNode::rsExtrinsicsToMsg(const rs2_extrinsics& extrinsics
 rs2::stream_profile BaseRealSenseNode::getAProfile(const stream_index_pair& stream)
 {
     const std::vector<rs2::stream_profile> profiles = _sensors[stream].get_stream_profiles();
-    return *(std::std::find_if(profiles.begin(), profiles.end(),
+    return *(std::find_if(profiles.begin(), profiles.end(),
                                             [&stream] (const rs2::stream_profile& profile) { 
                                                 return ((profile.stream_type() == stream.first) && (profile.stream_index() == stream.second)); 
                                             }));
@@ -2469,7 +2469,7 @@ bool BaseRealSenseNode::getEnabledProfile(const stream_index_pair& stream_index,
     {
         // Assuming that all D400 SKUs have depth sensor
         auto profiles = _enabled_profiles[stream_index];
-        auto it = std::std::find_if(profiles.begin(), profiles.end(),
+        auto it = std::find_if(profiles.begin(), profiles.end(),
                                [&](const rs2::stream_profile& profile)
                                { return (profile.stream_type() == stream_index.first); });
         if (it == profiles.end())
